@@ -1,0 +1,122 @@
+Value sysname (\S+)
+Value syslocation (\S+)
+Value syscontact (\S+)
+Value system_mac (\S+)
+Value system_type (\S+)
+Value syshealth_check (\S+)
+Value recovery_mode (\S+)
+Value system_watchdog (\S+)
+Value trusted_delivery (\S+)
+Value current_time (\S+)
+Value timezone (\S+)
+Value boot_time (\S+)
+Value boot_count (\S+)
+Value next_reboot (\S+)
+Value system_uptime (\S+)
+Value slot (\S+)
+Value current_state (\S+)
+Value image_selected (\S+)
+Value image_booted (\S+)
+Value primary_ver (\S+)
+Value secondary_ver (\S+)
+Value config_selected (\S+)
+Value config_booted (\S+)
+Value config_automatic (\S+)
+Value image (\S+)
+Value bootrom (\S+)
+Value diagnostics (\S+)
+Value certified_version (\S+)
+Value build_tools_version (\S+)
+Value laam (\S+)
+
+Start
+  ^SysName:\s+${sysname} -> Record
+  ^SysLocation:\s+${syslocation} -> Record
+  ^SysContact:\s+${syscontact} -> Record
+  ^System\s+MAC:\s+${system_mac} -> Record
+  ^System\s+Type:\s+${system_type} -> Record
+  ^SysHealth\s+check:\s+${syshealth_check} -> Record
+  ^Recovery\s+Mode:\s+${recovery_mode} -> Record
+  ^System\s+Watchdog:\s+${system_watchdog} -> Record
+  ^Trusted\s+Delivery:\s+${trusted_delivery} -> Record
+  ^Current\s+Time:\s+${current_time} -> Record
+  ^Timezone:\s+${timezone} -> Record
+  ^Boot\s+Time:\s+${boot_time} -> Record
+  ^Boot\s+Count:\s+${boot_count} -> Record
+  ^Next\s+Reboot:\s+${next_reboot} -> Record
+  ^System\s+UpTime:\s+${system_uptime} -> Record
+  ^${slot}:\s+${current_state} -> Record
+  ^Image\s+Selected:\s+${image_selected} -> Record
+  ^Image\s+Booted:\s+${image_booted} -> Record
+  ^Primary\s+ver:\s+${primary_ver} -> Record
+  ^Secondary\s+ver:\s+${secondary_ver} -> Record
+  ^Config\s+Selected:\s+${config_selected} -> Record
+  ^Config\s+Booted:\s+${config_booted} -> Record
+  ^Config\s+Automatic:\s+${config_automatic} -> Record
+  ^Image:\s+${image} -> Record
+  ^BootROM:\s+${bootrom} -> Record
+  ^Diagnostics:\s+${diagnostics} -> Record
+  ^Certified\s+Version:\s+${certified_version} -> Record
+  ^Build\s+Tools\s+Version:\s+${build_tools_version} -> Record
+  ^LAA\s+MAC:\s+${laam} -> Record
+  -> Return
+
+Start
+  ^Slot-\d+\s+:\s+${part_number}\s+${serial_number}\s+Rev\s+${revision}\s+BootROM:\s+${bootrom_version}\s+IMG:\s+${os_version} -> Record
+  ^Image\s+:\s+Extreme\s+Networks\s+Switch\s+Engine\s+version\s+${os_version}\s+${os_version_patch}\s+by\s+${author}
+    on\s+${build_date} -> Record
+  ^BootROM\s+:\s+Default\s+${bootrom_version}\s+Alternate\s+${bootrom_version} -> Record
+  ^Diagnostics\s+:\s+${diagnostics} -> Record
+  ^Certified\s+Version\s+:\s+${certified_version} -> Record
+  ^Build\s+Tools\s+Version\s+:\s+${build_tools_version} -> Record
+Stop
+
+
+Start
+  ^Field\s+Replaceable\s+Units\s+${frus} -> Record
+  ^${frus}\s+:.*\s+${temp}C\s+${status} -> Record
+  ^Slot-(?P<slot>\d+).5420F-24P-4XE\s+(?P<temp>\d+.\d+)\s+(?P<status>\w+).$ -> Record
+Stop
+
+
+
+Start
+  ^\s+${slots}[ ]+${type}[ ]+${psu1}[ ]+${psu2}[ ]+${psu3}[ ]+${psu4}[ ]+${power_usage} -> Record
+  ^\s+${flags} -> Record
+Stop
+
+
+Start
+  ^show\sfans -> Fan_Output
+
+Fan_Output
+  ^Slot-(?P<slot>\d)\sFanTray-(?P<fan_tray>\d)\sinformation: -> Fan_Information
+
+Fan_Information
+  ^\s+State:\s+(?P<state>\S+)\s+
+  ^\s+NumFan:\s+(?P<num_fan>\d+)\s+
+  ^\s+Fan-(?P<fan_number>\d):\s+(?P<fan_status>\S+)\s+at\s+(?P<fan_speed>\d+)\sRPM\s+ -> Record
+
+Record
+  ${slot}:${fan_tray}:${state}:${num_fan}:${fan_number}:${fan_status}:${fan_speed}
+
+
+
+Start
+  ^show odometers$ -> Command
+  ^${fru} -> Fru
+  ^${service_days} -> ServiceDays
+  ^${first_recorded} -> FirstRecorded
+  ^${start_date} -> StartDate
+  ^\s*$ -> Record
+Record
+  ^\s*${fru} -> Record
+  ^\s*${service_days} -> Record
+  ^\s*${first_recorded} -> Record
+  ^\s*${start_date} -> Record
+  ^\s*$ -> Record
+End
+
+
+
+End

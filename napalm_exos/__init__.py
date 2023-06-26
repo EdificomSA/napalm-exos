@@ -14,3 +14,5 @@
 
 """napalm-exos package."""
 from napalm_exos.exos import ExosDriver  # noqa F401
+
+__all__ = ["ExosDriver"]

@@ -1,0 +1,73 @@
+Value os_version (\S+)
+Value uptime (\S+)
+Value vendor ("Extreme")
+Value serial_number (\S+)
+Value model (\S+)
+Value hostname (\S+)
+Value slot (\S+)
+Value primary_ver (\S+)
+
+
+Start
+  ^SysName:\s+${hostname} -> Record
+  ^System\s+Type:\s+${model} -> Record
+  ^System\s+UpTime:\s+${uptime} -> Record
+  ^${slot}:\s+${current_state} -> Record
+  ^Primary\s+ver:\s+${primary_ver} -> Record
+  -> Return
+
+Start
+  ^Slot-\d+\s+:\s+${part_number}\s+${serial_number}\s+Rev\s+${revision}\s+BootROM:\s+${bootrom_version}\s+IMG:\s+${os_version} -> Record
+  ^Image\s+:\s+Extreme\s+Networks\s+Switch\s+Engine\s+version\s+${os_version}\s+${os_version_patch}\s+by\s+${author}
+    on\s+${build_date} -> Record
+Stop
+
+
+Start
+  ^Field\s+Replaceable\s+Units\s+${frus} -> Record
+  ^${frus}\s+:.*\s+${temp}C\s+${status} -> Record
+  ^Slot-(?P<slot>\d+).5420F-24P-4XE\s+(?P<temp>\d+.\d+)\s+(?P<status>\w+).$ -> Record
+Stop
+
+
+
+Start
+  ^\s+${slots}[ ]+${type}[ ]+${psu1}[ ]+${psu2}[ ]+${psu3}[ ]+${psu4}[ ]+${power_usage} -> Record
+  ^\s+${flags} -> Record
+Stop
+
+
+Start
+  ^show\sfans -> Fan_Output
+
+Fan_Output
+  ^Slot-(?P<slot>\d)\sFanTray-(?P<fan_tray>\d)\sinformation: -> Fan_Information
+
+Fan_Information
+  ^\s+State:\s+(?P<state>\S+)\s+
+  ^\s+NumFan:\s+(?P<num_fan>\d+)\s+
+  ^\s+Fan-(?P<fan_number>\d):\s+(?P<fan_status>\S+)\s+at\s+(?P<fan_speed>\d+)\sRPM\s+ -> Record
+
+Record
+  ${slot}:${fan_tray}:${state}:${num_fan}:${fan_number}:${fan_status}:${fan_speed}
+
+
+
+Start
+  ^show odometers$ -> Command
+  ^${fru} -> Fru
+  ^${service_days} -> ServiceDays
+  ^${first_recorded} -> FirstRecorded
+  ^${start_date} -> StartDate
+  ^\s*$ -> Record
+Record
+  ^\s*${fru} -> Record
+  ^\s*${service_days} -> Record
+  ^\s*${first_recorded} -> Record
+  ^\s*${start_date} -> Record
+  ^\s*$ -> Record
+End
+
+
+
+End

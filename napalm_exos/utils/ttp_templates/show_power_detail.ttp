@@ -1,0 +1,32 @@
+<doc>
+TTP Template to parse Extreme EXOS "show system" output.
+
+This template produces list of dictionaries results where each
+dictionary item compatible to this model:
+```
+module system-table {
+
+yang-version 1.1;
+
+namespace
+  "ttp://platform/extreme_exos_show_system";
+```
+
+Sample instance data:
+```
+TBD
+```
+</doc>
+
+<group name="psu.{{ slot_id }}.{{ psu_id }}" containsall="power_usage, max_power">
+Slot-{{ slot_id }} PowerSupply {{ psu_id }} information:
+ State             : {{ status | PHRASE }}
+ PartInfo          : {{ part_info | _line_ }}
+ Output 1          : 54.50 V,  1.26 A   (54V/{{ max_power }}W Max)
+ Power Usage       : {{ power_usage }} W
+
+System Power Usage : 153.58 W
+ Poll Interval     : 60 s
+ Change Threshold  : 10 W
+ Change Action     : trap
+</group>

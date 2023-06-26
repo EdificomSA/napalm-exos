@@ -1,0 +1,26 @@
+<doc>
+TTP Template to parse Extreme EXOS "show memory" output.
+
+Sample instance data:
+```
+System Memory Information
+-------------------------
+ Slot-1    Total DRAM (KB): 1048576
+ Slot-1    System     (KB): 61684
+ Slot-1    User       (KB): 622948
+ Slot-1    Free       (KB): 363944
+ Slot-2    Total DRAM (KB): 1048576
+ Slot-2    System     (KB): 61684
+ Slot-2    User       (KB): 540972
+ Slot-2    Free       (KB): 445920
+```
+</doc>
+
+<group name="memory.{{ slot_id }}">
+System Memory Information
+-------------------------
+ Slot-{{ slot_id }}    Total DRAM (KB): {{ total }}
+ Slot-{{ slot_id }}    System     (KB): {{ used_system }}
+ Slot-{{ slot_id }}    User       (KB): {{ used_user }}
+ Slot-{{ slot_id }}    Free       (KB): {{ free }}
+</group>

@@ -1,0 +1,44 @@
+{{ ospf_enabled }} = /\S+/
+{{ mpls_as_nexthop }} = /\S+/
+{{ router_id }} = /\d+\.\d+\.\d+\.\d+/
+{{ router_id_selection }} = /\S+/
+{{ asbr }} = /\S+/
+{{ abr }} = /\S+/
+{{ extlsa }} = /\d+/
+{{ extlsachecksum }} = /0x\S+/
+{{ originatenewlsa }} = /\d+/
+{{ receivednewlsa }} = /\d+/
+{{ spfholdtime }} = /\d+/
+{{ lsabatchinterval }} = /\S+/
+{{ capabilityopaquelsa }} = /\S+/
+{{ tenmcost }} = /\d+/
+{{ hundredmcost }} = /\d+/
+{{ thousandmcost }} = /\d+/
+{{ twothousandfivehundredmcost }} = /\d+/
+{{ fivethousandmcost }} = /\d+/
+{{ tenthousandmcost }} = /\d+/
+{{ twentyfivethousandmcost }} = /\d+/
+{{ fourtythousandmcost }} = /\d+/
+{{ fiftythousandmcost }} = /\d+/
+{{ hundredthousandmcost }} = /\d+/
+{{ routeralert }} = /\S+/
+{{ importpolicyfile }} = /\S+/
+{{ asexternallimit }} = /\S+/
+{{ timeout }} = /\S+/
+{{ originatedefault }} = /\S+/
+{{ snmptraps }} = /\S+/
+{{ snmptrapbitmap }} = /0x\S+/
+{{ vxlanextensions }} = /\S+/
+
+start =
+  /^OSPF\s+:\s+{{ ospf_enabled }}\s+MPLS LSP as Next-Hop:\s+{{ mpls_as_nexthop }}/
+  /^RouterId\s+:\s+{{ router_id }}\s+RouterId Selection\s+:\s+{{ router_id_selection }}/
+  /^ASBR\s+:\s+{{ asbr }}\s+ABR\s+:\s+{{ abr }}/
+  /^ExtLSA\s+:\s+{{ extlsa }}\s+ExtLSAChecksum\s+:\s+{{ extlsachecksum }}/
+  /^OriginateNewLSA\s+:\s+{{ originatenewlsa }}\s+ReceivedNewLSA\s+:\s+{{ receivednewlsa }}/
+  /^SpfHoldTime\s+:\s+{{ spfholdtime }}\s+Lsa Batch Interval\s+:\s+{{ lsabatchinterval }}/
+  /^CapabilityOpaqueLSA\s+:\s+{{ capabilityopaquelsa }}/
+  /^10M Cost\s+:\s+{{ tenmcost }}\s+100M Cost\s+:\s+{{ hundred
+
+
+End

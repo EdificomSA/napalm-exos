@@ -1,0 +1,25 @@
+{{ mac }} = /\S+/
+{{ vlan }} = /\S+/
+{{ age }} = /\d+/
+{{ flags }} = /\S+/
+{{ port }} = /\S+/
+{{ flag }} = /\S/
+{{ description }} = /\S+/
+{{ total }} = /\d+/
+{{ static }} = /\d+/
+{{ perm }} = /\d+/
+{{ dyn }} = /\d+/
+{{ dropped }} = /\d+/
+{{ locked }} = /\d+/
+{{ locked_with_timeout }} = /\d+/
+{{ fdb_aging_time }} = /\d+/
+
+start =
+  /^MAC/
+  /^{{ mac }}\s+{{ vlan }}\s+{{ age }}\s+{{ flags }}\s+{{ port }}/
+  /^Flags\s+:\s+{{ flag }}\s+-\s+{{ description }}/
+  /^Total:\s+{{ total }}\s+Static:\s+{{ static }}\s+Perm:\s+{{ perm }}\s+Dyn:\s+{{ dyn }}\s+Dropped:\s+{{ dropped }}\s+Locked:\s+{{ locked }}\s+Locked\s+with\s+Timeout:\s+{{ locked_with_timeout }}/
+  /^FDB\s+Aging\s+time:\s+{{ fdb_aging_time }}/
+  -> record
+
+End
