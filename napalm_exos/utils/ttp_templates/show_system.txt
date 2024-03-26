@@ -1,0 +1,68 @@
+<doc>
+TTP Template to parse Extreme EXOS "show system" output.
+
+This template produces list of dictionaries results where each
+dictionary item compatible to this model:
+```
+module system-table {
+
+yang-version 1.1;
+
+namespace
+  "ttp://platform/extreme_exos_show_system";
+```
+
+Sample instance data:
+```
+TBD
+```
+</doc>
+
+<group name="system">
+SysName:          {{ hostname }}
+System MAC:       {{ sys_mac }}
+System Type:      {{ model }}
+
+Current Time:     {{ time | PHRASE }}
+Timezone:         {{ timezone | PHRASE }}
+System UpTime:    {{ uptime | PHRASE }}
+
+Current State:    {{ status }}
+
+Config Selected:  {{ config_select }}
+Config Booted:    {{ config_boot }}
+
+LAA MAC:          Locally Administered MAC Address {{ laa_mac }}
+
+Image   : Extreme Networks Switch Engine version {{ short_version }} {{ full_version }} by release-manager
+Image   : ExtremeXOS version {{ version }} by release-manager
+Certified Version : EXOS Linux {{ kernel }}, Extreme Networks FIPS
+Certified Version : EXOS Linux {{ kernel }}, FIPS fips
+</group>
+
+
+<group name="env.{{ slot_id }}">
+Switch          : {{ part_numer }} {{ serial_number }} Rev {{ rev }} BootROM: {{ bootrom_version }}    IMG: {{ img }}
+Slot-{{ slot_id }}          : {{ part_numer }} {{ serial_number }} Rev AD BootROM: {{ bootrom_version }}    IMG: {{ img }}
+</group>
+	
+<group name="env.{{ slot_id }}">
+Switch                : {{ model }}                    {{ temp }}    {{ temp_status }}     0   10-100  {{ max_temp }}
+Slot-{{ slot_id }}                : {{ model }}                      {{ temperature }}    {{ temperature_status }}     0   10-{{ temperature_alert }}  {{ temperature_critical }}
+</group>
+
+<group name="env.{{ slot_id }}">
+System Power Usage : {{ power }} W
+Slot-{{ slot_id }} {{ model }}                   {{ psu_status }}         -         -         -         {{ power_usage }}
+</group>
+
+<group name="env.{{ slot_id }}.fan{{ fan_id }}" containsall="fan_speed">
+Slot-{{ slot_id }} FanTray-{{ fan_id }} information:
+ State:                  {{ fan_status }}
+ {{fan_id}}:                  {{ fan_status }} at {{ fan_speed }} RPM
+</group>
+
+<group name="env.{{ slot_id }}">
+Slot-{{ slot_id }}                : {{ model }}                         {{ odo_days }}  {{ odo_date }}
+Switch                : {{ model }}                     {{ service_days }}  {{ first_start_date }}
+</group>

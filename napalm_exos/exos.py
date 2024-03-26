@@ -301,7 +301,7 @@ class ExosDriver(NetworkDriver):
         """
         system = self._get_and_parse_output(
             'show system')
-        uptime = self.parse_uptime(system.uptime)
+        system.uptime = self.parse_uptime(system.uptime)
         return system
 
     def get_firewall_policies(self):

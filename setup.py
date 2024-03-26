@@ -12,7 +12,7 @@ reqs = [str(ir.requirement) for ir in install_reqs]
 
 setup(
     name="napalm-exos",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     author="Yannis Ansermoz",
     author_email="info@edificom.ch",
@@ -20,11 +20,9 @@ setup(
     classifiers=[
         'Topic :: Utilities',
          'Programming Language :: Python',
-         'Programming Language :: Python :: 3.6',
-         'Programming Language :: Python :: 3.7',
-         'Programming Language :: Python :: 3.8',
          'Programming Language :: Python :: 3.9',
          'Programming Language :: Python :: 3.10',
+         'Programming Language :: Python :: 3.11',
         'Operating System :: POSIX :: Linux',
     ],
     url="https://github.com/EdificomSA/napalm-exos",
